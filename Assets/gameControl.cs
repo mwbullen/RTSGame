@@ -12,6 +12,14 @@ public class gameControl : MonoBehaviour {
 		foreach (GameObject g in landingPads) {
 			//Instantiate(Scout, g.transform.position, g.transform.rotation);
 				}
+
+		GameObject e = GameObject.FindGameObjectWithTag ("Enemy");
+		GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
+		
+		foreach(GameObject scout in scouts) {
+			scout.SendMessage("seek", e);
+			
+		}	
 	}
 	
 	// Update is called once per frame
@@ -31,7 +39,7 @@ public class gameControl : MonoBehaviour {
 			GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
 			
 			foreach(GameObject scout in scouts) {
-				scout.SendMessage("setTarget", g);
+				scout.SendMessage("seek", g);
 				
 			}	
 		}
