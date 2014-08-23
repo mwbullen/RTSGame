@@ -8,7 +8,7 @@ public class shipAi : MonoBehaviour {
 	Quaternion currentIntendedRotation;
 	
 	public float maxSpeed;
-	float speed = 1;
+	float speed = 0;
 	public float acceleration;
 	
 	public float turnSpeed;
@@ -24,9 +24,11 @@ public class shipAi : MonoBehaviour {
 	Vector3 bankingVector =Vector3.zero;
 	public float bankLimit = 10;
 	
-	enum state {Launching, Seeking, Swerving, Defending, Landing};
+	enum state {Launching, Seeking, Swerving, Landing, Stopped, Circling};
+	enum mission {Attacking, Defending, Harvesting};
+
 	// Use this for initialization
-	state currentState = state.Launching;
+	state currentState = state.Stopped;
 	state previousState;
 
 	
@@ -41,7 +43,12 @@ public class shipAi : MonoBehaviour {
 		//if (currentTargetPosition != null) {
 
 
-		Debug.Log (currentState.ToString ());
+		//Debug.Log (currentState.ToString ());
+
+
+		if (currentState == state.Stopped) {
+			return;
+		}
 
 		if (speed < maxSpeed){
 			speed += acceleration;			
@@ -54,6 +61,12 @@ public class shipAi : MonoBehaviour {
 		}
 
 		switch (currentState) {
+		case state.Circling:
+				if (Vector3.Distance(transform.position, currentTarget.transform.position) < 30) {
+				//transform.RotateAround(currentTarget.transform.position, Vector3.up, Time.deltaTime * 
+			}
+			 break;
+
 		case state.Seeking:
 				//transform.LookAt (currentTargetPosition);
 					//currentTargetRotation = currentTarget.transform.position - transform.position;
@@ -84,10 +97,11 @@ public class shipAi : MonoBehaviour {
 				}
 			} 
 				//transform.rotation = Quaternion.RotateTowards(transform.rotation, currentTargetRotation, turnSpeed * Time.deltaTime);
-
 				//transform.Rotate(
 				break;
 		}
+
+
 
 
 		transform.rotation = Quaternion.Slerp(transform.rotation, currentIntendedRotation,turnSpeed * Time.deltaTime);
@@ -117,6 +131,11 @@ public class shipAi : MonoBehaviour {
 		//currentTargetPosition = g.transform.position;
 		currentState = state.Seeking;
 		
+	}
+
+	void circle(GameObject g) {
+		currentTarget = g;
+		currentState = state.Circling;
 	}
 
 	int getRandomSign() {
