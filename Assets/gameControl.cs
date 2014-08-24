@@ -88,6 +88,15 @@ public class gameControl : MonoBehaviour {
 			}
 		}
 
+		if (Input.GetKey (KeyCode.Z)) {
+			GameObject c = GameObject.FindGameObjectWithTag ("Enemy");
+
+			foreach(GameObject g in GameObject.FindGameObjectsWithTag("Weapon")) {
+				//scout.SendMessage("seek", target);				
+				g.SendMessage("SetTarget", c);
+			}
+		}
+
 		if (Input.GetKey (KeyCode.C)) {
 			//GameObject g = GameObject.FindGameObjectWithTag ("Enemy");
 			//GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
