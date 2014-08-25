@@ -13,6 +13,8 @@ public class Cannon : MonoBehaviour {
 	public GameObject barrel;
 	private GameObject currentTarget;
 
+	public GameObject primaryStation;
+
 	// Use this for initialization
 	void Start () {
 
@@ -25,7 +27,7 @@ public class Cannon : MonoBehaviour {
 
 	void Fire () {
 
-		if (timeSinceLastFire >= fireInterval) {
+		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
 			cBall.rigidbody.AddForce (barrel.transform.up * cannonVelocity, ForceMode.Impulse);
 

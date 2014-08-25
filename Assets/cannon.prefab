@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preferredTeam: 4
+  Status: 3
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -172,6 +173,7 @@ MonoBehaviour:
   cannonVelocity: 75
   fireInterval: 1
   barrel: {fileID: 100004}
+  primaryStation: {fileID: 100002}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

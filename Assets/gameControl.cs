@@ -151,6 +151,7 @@ public class gameControl : MonoBehaviour {
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("navSpot")) {
 			stationAi s = g.GetComponent<stationAi>();
 
+			Debug.Log (s);
 			if (s.Status == stationAi.StationStatus.RequestingCrew) {
 				GameObject crewMan = FindAvailableCrewman(s.preferredTeam);
 

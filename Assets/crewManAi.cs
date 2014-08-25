@@ -61,8 +61,9 @@ public class crewManAi : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (currentTarget != null && navAgent.remainingDistance == 0) {
-			//currentTarget.SendMessage("Arrived");
+		if (currentTarget != null && navAgent.pathStatus == NavMeshPathStatus.PathComplete && navAgent.remainingDistance == 0 && navAgent.velocity.sqrMagnitude == 0f && !navAgent.pathPending) {
+			Debug.Log ("Crewman arrived!");
+			currentTarget.SendMessage("CrewManArrived");
 		}
 	}
 
