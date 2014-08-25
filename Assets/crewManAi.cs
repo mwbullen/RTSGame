@@ -10,20 +10,20 @@ public class crewManAi : MonoBehaviour {
 
 	public enum Status
 		{
-			AtBattleStation, Training, Free
+			AssignedStation, Free
 		}
 
-	public Hashtable test;
 
 	public Status currentStatus = Status.Free;
 
 	public Team currentTeam = Team.None;
 
+	public GameObject currentTarget;
+
 	public Material Mechanic_Material;
 	public Material Pilot_Material;
 	public Material Soldier_Material;
 	public Material Gunner_Material;
-
 
 	public float MechanicLevel = 0;
 	public float PilotLevel = 0;
@@ -61,11 +61,14 @@ public class crewManAi : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+		if (currentTarget != null && navAgent.remainingDistance == 0) {
+			//currentTarget.SendMessage("Arrived");
+		}
 	}
 
 	void setTarget(GameObject g) {
+		currentTarget = g;
 		navAgent.SetDestination (g.transform.position);
-
+		currentStatus = Status.AssignedStation;
 		}
 }

@@ -5,7 +5,15 @@ public class stationAi : MonoBehaviour {
 	public crewManAi.Team preferredTeam;
 
 	//status
+	public enum StationStatus {Manned, RequestingCrew, Idle};
+
+	public StationStatus Status = StationStatus.Idle;
+
 	private GameObject assignedCrewman;
+
+	//public GameObject activeCrewman;
+
+	//public crewManAi.Status stationType;
 
 
 	// Use this for initialization
@@ -15,34 +23,32 @@ public class stationAi : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+//		if (Status == StationStatus.RequestingCrew) {
+//			RequestCrewman();				
+//		}
 	}
 
-	GameObject findCrewman() {
-
-		GameObject returnCrewman = null;
-
-
-		foreach (GameObject c in GameObject.FindGameObjectsWithTag("Friend")) {
-			crewManAi crewAi = c.GetComponent<crewManAi> ();
-
-			//if crewman is preferred team and is available (on low-status duty)
-			if (crewAi.currentTeam == preferredTeam && crewAi.currentStatus != crewManAi.Status.AtBattleStation ) {
-
-				if (returnCrewman != null) {
-				switch (preferredTeam) {
-					case crewManAi.Team.Gunner:
-						if (crewAi.GunnerLevel > returnCrewman.GetComponent<crewManAi>().GunnerLevel) {
-							returnCrewman = c;							
-						}
-					}						    
-				} else {
-					returnCrewman = c;
-
-				}
-				returnCrewman = c;
-			}
+	void AssignCrewman(GameObject g) {
+		assignedCrewman = g;
+		g.SendMessage ("setTarget", gameObject);
+		Status = StationStatus.Manned;
+	}
+//	void RequestCrewman() {
+//		
+//		assignedCrewman = FindAvailableCrewman();
+//		
+//		if (assignedCrewman != null) {
+//			Debug.Log ("Found crewman!");
+//			assignedCrewman.SendMessage("setTarget", gameObject);
+//			Status = StationStatus.Manned;
+//		}
+//	}
+//
+	void FindCrewman() {
+		if (assignedCrewman == null) {
+			Status = StationStatus.RequestingCrew;
 		}
-		return returnCrewman;
 	}
+
+
 }

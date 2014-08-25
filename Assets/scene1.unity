@@ -724,6 +724,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b459dcdfffa49049b17117db685332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preferredTeam: 0
+  assignedCrewman: {fileID: 0}
 --- !u!23 &123833622
 Renderer:
   m_ObjectHideFlags: 0
@@ -808,7 +810,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!23 &284047767
 Renderer:
   m_ObjectHideFlags: 0
@@ -1186,6 +1188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b459dcdfffa49049b17117db685332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preferredTeam: 4
+  assignedCrewman: {fileID: 0}
 --- !u!23 &305826189
 Renderer:
   m_ObjectHideFlags: 0
@@ -1270,7 +1274,7 @@ Transform:
   m_LocalScale: {x: 8, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 5
+  m_RootOrder: 0
 --- !u!23 &314153768
 Renderer:
   m_ObjectHideFlags: 0
@@ -1415,7 +1419,7 @@ Transform:
   m_LocalScale: {x: 8, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!23 &403715465
 Renderer:
   m_ObjectHideFlags: 0
@@ -1609,13 +1613,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
-      propertyPath: m_TagString
-      value: Friend
-      objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
       propertyPath: currentTeam
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
@@ -2005,7 +2005,6 @@ GameObject:
   - 4: {fileID: 605126135}
   - 195: {fileID: 605126137}
   - 114: {fileID: 605126138}
-  - 114: {fileID: 605126136}
   m_Layer: 0
   m_Name: crewMan
   m_TagString: Friend
@@ -2027,27 +2026,6 @@ Transform:
   - {fileID: 1376771211}
   m_Father: {fileID: 0}
   m_RootOrder: 7
---- !u!114 &605126136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 605126134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTeam: 0
-  Mechanic_Material: {fileID: 0}
-  Pilot_Material: {fileID: 0}
-  Soldier_Material: {fileID: 0}
-  Gunner_Material: {fileID: 0}
-  MechanicLevel: 0
-  PilotLevel: 0
-  GunnerLevel: 0
-  SoldierLevel: 0
-  body: {fileID: 0}
 --- !u!195 &605126137
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2081,7 +2059,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeam: 4
+  currentStatus: 2
+  currentTeam: 2
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -2120,7 +2100,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 50}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!23 &766594088
 Renderer:
   m_ObjectHideFlags: 0
@@ -2206,13 +2186,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
-      propertyPath: m_TagString
-      value: Friend
-      objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
       propertyPath: currentTeam
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
@@ -2574,7 +2550,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!23 &910839605
 Renderer:
   m_ObjectHideFlags: 0
@@ -2720,10 +2696,6 @@ Prefab:
     - target: {fileID: 400002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
       propertyPath: m_RootOrder
       value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
-      propertyPath: m_TagString
-      value: Friend
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
@@ -2963,10 +2935,6 @@ Prefab:
     - target: {fileID: 400002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
       propertyPath: m_RootOrder
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
-      propertyPath: m_TagString
-      value: Friend
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
@@ -3339,7 +3307,6 @@ GameObject:
   - 4: {fileID: 1271077318}
   - 195: {fileID: 1271077320}
   - 114: {fileID: 1271077321}
-  - 114: {fileID: 1271077319}
   m_Layer: 0
   m_Name: crewMan
   m_TagString: Friend
@@ -3361,27 +3328,6 @@ Transform:
   - {fileID: 1464844865}
   m_Father: {fileID: 0}
   m_RootOrder: 8
---- !u!114 &1271077319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1271077317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTeam: 0
-  Mechanic_Material: {fileID: 0}
-  Pilot_Material: {fileID: 0}
-  Soldier_Material: {fileID: 0}
-  Gunner_Material: {fileID: 0}
-  MechanicLevel: 0
-  PilotLevel: 0
-  GunnerLevel: 0
-  SoldierLevel: 0
-  body: {fileID: 0}
 --- !u!195 &1271077320
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3415,7 +3361,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeam: 2
+  currentStatus: 2
+  currentTeam: 3
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -3632,7 +3580,6 @@ GameObject:
   - 4: {fileID: 1342880242}
   - 195: {fileID: 1342880241}
   - 114: {fileID: 1342880243}
-  - 114: {fileID: 1342880240}
   m_Layer: 0
   m_Name: crewMan
   m_TagString: Friend
@@ -3640,27 +3587,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1342880240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1342880239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTeam: 0
-  Mechanic_Material: {fileID: 0}
-  Pilot_Material: {fileID: 0}
-  Soldier_Material: {fileID: 0}
-  Gunner_Material: {fileID: 0}
-  MechanicLevel: 0
-  PilotLevel: 0
-  GunnerLevel: 0
-  SoldierLevel: 0
-  body: {fileID: 0}
 --- !u!195 &1342880241
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3708,7 +3634,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeam: 3
+  currentStatus: 2
+  currentTeam: 4
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -4050,7 +3978,6 @@ GameObject:
   - 4: {fileID: 1573447768}
   - 195: {fileID: 1573447770}
   - 114: {fileID: 1573447771}
-  - 114: {fileID: 1573447769}
   m_Layer: 0
   m_Name: crewMan
   m_TagString: Friend
@@ -4072,27 +3999,6 @@ Transform:
   - {fileID: 1324391451}
   m_Father: {fileID: 0}
   m_RootOrder: 10
---- !u!114 &1573447769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1573447767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTeam: 0
-  Mechanic_Material: {fileID: 0}
-  Pilot_Material: {fileID: 0}
-  Soldier_Material: {fileID: 0}
-  Gunner_Material: {fileID: 0}
-  MechanicLevel: 0
-  PilotLevel: 0
-  GunnerLevel: 0
-  SoldierLevel: 0
-  body: {fileID: 0}
 --- !u!195 &1573447770
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4126,7 +4032,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStatus: 2
   currentTeam: 0
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -4611,7 +4519,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d72b0d42d4a4436a9fd4c9bbd0163af, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4d72b0d42d4a4436a9fd4c9bbd0163af, type: 2}
@@ -4883,12 +4791,12 @@ Transform:
   m_LocalPosition: {x: 1029.37488, y: 104.907104, z: 602.717651}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 314153767}
   - {fileID: 284047766}
   - {fileID: 766594087}
   - {fileID: 1876696758}
   - {fileID: 910839604}
   - {fileID: 403715464}
-  - {fileID: 314153767}
   m_Father: {fileID: 0}
   m_RootOrder: 4
 --- !u!1 &1858813049
@@ -4901,7 +4809,6 @@ GameObject:
   - 4: {fileID: 1858813050}
   - 195: {fileID: 1858813052}
   - 114: {fileID: 1858813053}
-  - 114: {fileID: 1858813051}
   m_Layer: 0
   m_Name: crewMan
   m_TagString: Friend
@@ -4923,27 +4830,6 @@ Transform:
   - {fileID: 1728318023}
   m_Father: {fileID: 0}
   m_RootOrder: 11
---- !u!114 &1858813051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1858813049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTeam: 0
-  Mechanic_Material: {fileID: 0}
-  Pilot_Material: {fileID: 0}
-  Soldier_Material: {fileID: 0}
-  Gunner_Material: {fileID: 0}
-  MechanicLevel: 0
-  PilotLevel: 0
-  GunnerLevel: 0
-  SoldierLevel: 0
-  body: {fileID: 0}
 --- !u!195 &1858813052
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4977,7 +4863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStatus: 2
   currentTeam: 0
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -5058,7 +4946,7 @@ Transform:
   m_LocalScale: {x: 3.1500001, y: .389999986, z: 20.1399994}
   m_Children: []
   m_Father: {fileID: 1858659508}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1001 &1923335755
 Prefab:
   m_ObjectHideFlags: 0
@@ -5150,13 +5038,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
-      propertyPath: m_TagString
-      value: Friend
-      objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
       propertyPath: currentTeam
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6cfc58e373b4248d29459f694605db4c, type: 2}
@@ -5204,7 +5088,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4d72b0d42d4a4436a9fd4c9bbd0163af, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 4d72b0d42d4a4436a9fd4c9bbd0163af, type: 2}
       propertyPath: m_LocalRotation.x
@@ -5278,6 +5162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55b459dcdfffa49049b17117db685332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  preferredTeam: 4
+  assignedCrewman: {fileID: 0}
 --- !u!23 &2024563497
 Renderer:
   m_ObjectHideFlags: 0
@@ -5437,7 +5323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStatus: 2
   currentTeam: 1
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
