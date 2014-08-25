@@ -11,6 +11,8 @@ public class Cannon : MonoBehaviour {
 	public float fireInterval;
 
 	public GameObject barrel;
+	public GameObject cannonBase;
+
 	private GameObject currentTarget;
 
 	public GameObject primaryStation;
@@ -26,6 +28,13 @@ public class Cannon : MonoBehaviour {
 	}
 
 	void Fire () {
+		//Maximum range for set velocity:
+
+		//R = (v^2 * sin (2 *angle))/ G
+
+		//Angle = .5 * sin^-1 (gR / v^2) 
+
+		//Change acceleration to velocity?
 
 		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
@@ -61,8 +70,26 @@ public class Cannon : MonoBehaviour {
 //		}
 	}
 
+	void RotatetoTarget(GameObject g) {
+//		Vector3 relativePos = g.transform.position - cannonBase.transform.position;
+//		Quaternion rotation = Quaternion.LookRotation(relativePos);
+//		cannonBase.transform.rotation = rotation;
+//
+		cannonBase.transform.LookAt (g.transform.position);
+	}
+	
+	
 	void SetTarget (GameObject g) {
 		currentTarget = g;
+		RotatetoTarget (currentTarget);
 		SetInclinetoTarget (currentTarget);
 	}
+
+
+	void StepLeft() {
+		//barrel.transform.RotateAround (cannonBase.transform.position, transform.up, -3f);
+	}
 }
+
+
+

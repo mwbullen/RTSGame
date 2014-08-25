@@ -30,6 +30,8 @@ public class crewManAi : MonoBehaviour {
 	public float GunnerLevel = 0;
 	public float SoldierLevel= 0;
 
+	public float Health = 100;
+	public float Stamina = 100;
 
 	public GameObject body;
 

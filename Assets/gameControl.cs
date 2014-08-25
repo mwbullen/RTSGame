@@ -115,7 +115,14 @@ public class gameControl : MonoBehaviour {
 			callBattleStations();
 			
 		}
-		
+
+		if (Input.GetKey (KeyCode.LeftArrow)) {
+						
+			foreach(GameObject g in GameObject.FindGameObjectsWithTag("Weapon")) {
+				//scout.SendMessage("seek", target);				
+				g.SendMessage("StepLeft");
+			}
+		}
 		
 		if (Input.GetKey (KeyCode.C)) {
 			//GameObject g = GameObject.FindGameObjectWithTag ("Enemy");
