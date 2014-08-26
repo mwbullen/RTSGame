@@ -21,13 +21,18 @@ public class Cannon : MonoBehaviour {
 
 	//public Vector3 targetRotation;
 
-	private Vector3 resetPosition;
+	//private Vector3 resetPosition;
+	//private Quaternion resetRotation;
 
 	public float rotateSpeed = 5f;
 
 	// Use this for initialization
 	void Start () {
-		resetPosition = cannonBase.transform.position;
+		//resetPosition =  cannonBase.transform.localPosition;
+
+		//resetPosition = transform.forward;
+
+		//Debug.Log (resetPosition.ToString ());
 	}
 	
 	// Update is called once per frame
@@ -71,7 +76,7 @@ public class Cannon : MonoBehaviour {
 
 		float targetDistance = Vector3.Distance (transform.position, g.transform.position);
 
-		float angle = .5f * Mathf.Asin (9.81f * targetDistance / Mathf.Pow(cannonVelocity,2));
+	//	float angle = .5f * Mathf.Asin (9.81f * targetDistance / Mathf.Pow(cannonVelocity,2));
 
 //		Debug.Log (targetDistance);
 //		Debug.Log (angle);
@@ -86,20 +91,21 @@ public class Cannon : MonoBehaviour {
 		Vector3 adjustedTargetPosition = new Vector3 (g.transform.position.x, cannonBase.transform.position.y, g.transform.position.z);
 
 		//Vector3 relativePos = adjustedTargetPosition - cannonBase.transform.position;
-		Vector3 relativePos = adjustedTargetPosition - resetPosition;
+		Vector3 relativePos = adjustedTargetPosition - transform.position;
 
 //		Quaternion rotation = Quaternion.LookRotation(relativePos);
 //		cannonBase.transform.rotation = rotation;
 //
 		//cannonBase.transform.LookAt (g.transform.position);
 
-		float angletoTarget = Vector3.Angle (resetPosition, relativePos);
+		float angletoTarget = Vector3.Angle (transform.forward, relativePos);
+
 
 		Debug.Log (angletoTarget + ", " + maxHTurnAngle);
 		if (angletoTarget <= maxHTurnAngle) {
 				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 				} else {
-			cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (resetPosition), rotateSpeed * Time.deltaTime);
+			cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation(transform.forward), rotateSpeed * Time.deltaTime);
 		}
 		//Debug.Log (Vector3.Angle (transform.forward, relativePos));
 	}
