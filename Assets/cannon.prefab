@@ -245,6 +245,8 @@ MonoBehaviour:
   barrel: {fileID: 100004}
   cannonBase: {fileID: 100006}
   primaryStation: {fileID: 100002}
+  maxHTurnAngle: 85
+  rotateSpeed: 5
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
