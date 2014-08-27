@@ -19,12 +19,15 @@ public class Cannon : MonoBehaviour {
 
 	public float maxHTurnAngle = 85f;
 
+	enum shipLocation {Port, Starboard};
+
 	//public Vector3 targetRotation;
 
 	//private Vector3 resetPosition;
 	//private Quaternion resetRotation;
 
 	public float rotateSpeed = 5f;
+	public float accuracyThreshhold = 3;
 
 	// Use this for initialization
 	void Start () {
@@ -39,9 +42,43 @@ public class Cannon : MonoBehaviour {
 	void Update () {
 		timeSinceLastFire += Time.deltaTime;
 
-		if (currentTarget != null) {
-			RotatetoTarget(currentTarget);
+
+		if (primaryStation.GetComponent<stationAi> ().Status != stationAi.StationStatus.Manned) {
+			return;
 				}
+//		if (currentTarget != null) {
+//			RotatetoTarget(currentTarget);
+//				
+//		}
+
+		if (currentTarget == null) {
+			RotatetoDefault();
+			GameObject g = FindTarget ();
+
+			if (g != null) {
+				SetTarget (g);
+			}
+		} else {
+			if (ObjectisAimable (currentTarget)) {
+				RotatetoTarget (currentTarget);	
+				//Fire ();
+			} else {
+				//if current target is out of view, forget it
+				currentTarget = null;
+			}
+		}
+
+
+//		GameObject g  = FindTarget ();
+//		if (g != null) {
+//			SetTarget(g);
+//				}
+//	
+//		if (currentTarget != null) {
+//			RotatetoTarget(currentTarget);
+//				
+//		}
+
 	}
 
 	void Fire () {
@@ -53,7 +90,7 @@ public class Cannon : MonoBehaviour {
 
 		//Change acceleration to velocity?
 
-		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned) {
+		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned && currentTarget != null) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
 			cBall.rigidbody.AddForce (barrel.transform.up * cannonVelocity, ForceMode.Impulse);
 
@@ -63,6 +100,15 @@ public class Cannon : MonoBehaviour {
 		}
 	}
 
+	GameObject FindTarget() {
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Enemy")) {
+			if (ObjectisAimable(g)) {
+				return g;
+				}
+			}
+
+		return null;
+		}
 
 	void SetInclinetoTarget(GameObject g) {
 //		RaycastHit r;
@@ -74,7 +120,7 @@ public class Cannon : MonoBehaviour {
 		//(1/2)*asin(9.81* self.Distance from / self.Power ^2)
 
 
-		float targetDistance = Vector3.Distance (transform.position, g.transform.position);
+		//float targetDistance = Vector3.Distance (transform.position, g.transform.position);
 
 	//	float angle = .5f * Mathf.Asin (9.81f * targetDistance / Mathf.Pow(cannonVelocity,2));
 
@@ -100,16 +146,39 @@ public class Cannon : MonoBehaviour {
 
 		float angletoTarget = Vector3.Angle (transform.forward, relativePos);
 
+		//Debug.Log (angletoTarget + ", " + maxHTurnAngle);
 
-		Debug.Log (angletoTarget + ", " + maxHTurnAngle);
-		if (angletoTarget <= maxHTurnAngle) {
-				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
-				} else {
-			cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation(transform.forward), rotateSpeed * Time.deltaTime);
+//		if (cannonBase.transform.rotation == Quaternion.LookRotation(relativePos)) {
+//			Fire ();
+//		} else {
+		//Debug.Log (cannonBase.transform.rotation.ToString () + "|| " +  Quaternion.LookRotation (relativePos).ToString ());
+
+		float aimDelta = Vector3.Angle (cannonBase.transform.forward, relativePos);
+		Debug.Log (aimDelta);
+			if (angletoTarget <= maxHTurnAngle) {
+					cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+					} 
+//		}
+		if (aimDelta < accuracyThreshhold) {
+			Fire();
 		}
 		//Debug.Log (Vector3.Angle (transform.forward, relativePos));
 	}
-	
+
+	void RotatetoDefault() {
+		cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation(transform.forward), rotateSpeed * Time.deltaTime);
+	}
+
+	bool ObjectisAimable(GameObject g) {
+		Vector3 adjustedTargetPosition = new Vector3 (g.transform.position.x, cannonBase.transform.position.y, g.transform.position.z);
+		
+		//Vector3 relativePos = adjustedTargetPosition - cannonBase.transform.position;
+		Vector3 relativePos = adjustedTargetPosition - transform.position;
+						
+		float angletoTarget = Vector3.Angle (transform.forward, relativePos);
+
+		return (angletoTarget <= maxHTurnAngle);
+		}
 	
 	void SetTarget (GameObject g) {
 		currentTarget = g;

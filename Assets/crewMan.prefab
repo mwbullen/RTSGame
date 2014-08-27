@@ -156,7 +156,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce8b288a1a894bfc8c5517c9d018a33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentStatus: 1
   currentTeam: 0
+  currentTarget: {fileID: 0}
   Mechanic_Material: {fileID: 2100000, guid: f416968cae1f04d169700bc77d657e81, type: 2}
   Pilot_Material: {fileID: 2100000, guid: 2941b53a35003446695ce7c54787a612, type: 2}
   Soldier_Material: {fileID: 2100000, guid: 1bc9ded5fae3b41858b2bdc2f2dd9e28, type: 2}
@@ -165,6 +167,8 @@ MonoBehaviour:
   PilotLevel: 0
   GunnerLevel: 0
   SoldierLevel: 0
+  Health: 100
+  Stamina: 100
   body: {fileID: 100004}
 --- !u!135 &13500000
 SphereCollider:
@@ -200,7 +204,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_Radius: .5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 12
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
