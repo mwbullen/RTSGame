@@ -24,6 +24,9 @@ public class gameControl : MonoBehaviour {
 			
 		}
 		*/
+
+		callBattleStations();
+
 	}
 
 	GameObject getHitTarget ()

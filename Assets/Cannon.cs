@@ -61,6 +61,7 @@ public class Cannon : MonoBehaviour {
 		} else {
 			if (ObjectisAimable (currentTarget)) {
 				RotatetoTarget (currentTarget);	
+				//SetInclinetoTarget();
 				//Fire ();
 			} else {
 				//if current target is out of view, forget it
@@ -92,7 +93,7 @@ public class Cannon : MonoBehaviour {
 
 		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned && currentTarget != null) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
-			cBall.rigidbody.AddForce (barrel.transform.up * cannonVelocity, ForceMode.Impulse);
+			cBall.rigidbody.AddForce (barrel.transform.up * cannonVelocity, ForceMode.VelocityChange);
 
 			timeSinceLastFire = 0;
 
@@ -110,15 +111,52 @@ public class Cannon : MonoBehaviour {
 		return null;
 		}
 
-	void SetInclinetoTarget(GameObject g) {
+	float getInclinetoTarget() {
 //		RaycastHit r;
 //
 //		if (Physics.Raycast (new Ray (transform.position, transform.up), out r)) {
 //
 //			}
 
+		//float rangeToTarget = Vector3.Distance (transform.position, currentTarget.transform.position);
+
+		//maximum range:
+		//R = (v^2 * sin (2 *angle))/ G
+
+		//angle to hit target at range R:
+		//Angle = .5 * sin^-1 (gR / v^2) 
+
+		Vector3 relativePos = currentTarget.transform.position - transform.position;
+		//float rangeToTarget = relativePos
+
+		//Debug.Log((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
+
+		//float firingAngle = .5f * Mathf.Asin ((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
+
+		//Debug.Log (firingAngle);
+
 		//(1/2)*asin(9.81* self.Distance from / self.Power ^2)
 
+		//to hit targets that can be above or below:
+		//angle = arctan( (v^2 +- sqrt(v^4- g(gx^2 + 2yv^2) ) / gx  )
+
+		float g = Physics.gravity.y;
+		float x = relativePos.x;
+		float y = relativePos.y;
+
+		float v2 = Mathf.Pow (cannonVelocity, 2);
+		float v4 = Mathf.Pow (cannonVelocity, 4);
+
+		float x2 = Mathf.Pow (x, 2);
+
+		float firingAngle = Mathf.Atan( v2 + Mathf.Sqrt(v4 - g * ((g * x2) + (2f * y * v2) ) ) / (g * x) );
+
+		firingAngle = firingAngle * Mathf.Rad2Deg;
+
+		Debug.Log (firingAngle);
+
+		return firingAngle;
+		//barrel.transform.eulerAngles = new Vector3 (firingAngle, barrel.transform.eulerAngles.y, barrel.transform.eulerAngles.z);
 
 		//float targetDistance = Vector3.Distance (transform.position, g.transform.position);
 
@@ -153,15 +191,22 @@ public class Cannon : MonoBehaviour {
 //		} else {
 		//Debug.Log (cannonBase.transform.rotation.ToString () + "|| " +  Quaternion.LookRotation (relativePos).ToString ());
 
+		Quaternion targetRotation = Quaternion.LookRotation (relativePos);
+		targetRotation = Quaternion.Euler (getInclinetoTarget(), targetRotation.eulerAngles.y, targetRotation.eulerAngles.z);
+
+
+
 		float aimDelta = Vector3.Angle (cannonBase.transform.forward, relativePos);
-		Debug.Log (aimDelta);
+		//Debug.Log (aimDelta);
 			if (angletoTarget <= maxHTurnAngle) {
-					cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+					//cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+
+				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 					} 
 //		}
-		if (aimDelta < accuracyThreshhold) {
+		//if (aimDelta < accuracyThreshhold) {
 			Fire();
-		}
+		//}
 		//Debug.Log (Vector3.Angle (transform.forward, relativePos));
 	}
 
@@ -183,7 +228,7 @@ public class Cannon : MonoBehaviour {
 	void SetTarget (GameObject g) {
 		currentTarget = g;
 		RotatetoTarget (currentTarget);
-		SetInclinetoTarget (currentTarget);
+		//SetInclinetoTarget ();
 	}
 
 
