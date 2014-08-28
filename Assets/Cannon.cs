@@ -96,7 +96,7 @@ public class Cannon : MonoBehaviour {
 
 		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned && currentTarget != null) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
-			cBall.rigidbody.AddForce (barrel.transform.forward * cannonVelocity, ForceMode.VelocityChange);
+			cBall.rigidbody.AddForce (barrel.renderer.transform.forward * cannonVelocity, ForceMode.VelocityChange);
 
 			timeSinceLastFire = 0;
 
@@ -165,10 +165,18 @@ public class Cannon : MonoBehaviour {
 		float g = Physics.gravity.y;
 		//float x = Mathf.Abs (relativePos.x);
 
-		float x = Vector3.Distance (currentTarget.transform.position, transform.position);
+		float x = Vector3.Distance (currentTarget.transform.position, barrel.transform.position);
 		//float x = Vector3.Distance (adjustedTargetPosition, barrel.transform.position);
 
-		float y = relativePos.y;
+		//float y = relativePos.y;
+
+		float y = currentTarget.transform.position.y - barrel.transform.position.y;
+
+		y = y * -1;
+		//y = y * 1.5f;
+
+
+		Debug.Log ("Target height:" + y);
 
 		//Debug.Log (relativePos.ToString());
 
@@ -193,18 +201,19 @@ public class Cannon : MonoBehaviour {
 
 		float v = cannonVelocity;
 		
-		float sqrt = (v*v*v*v) - (g*(g*(x*x) + 2*y*(v*v)));
+		float sqrt = (v*v*v*v) - (g*(g*(x*x) + 2f*y*(v*v)));
 		sqrt = Mathf.Sqrt(sqrt);
 
 		float angleInRadians = Mathf.Atan(((v*v) - sqrt)/(g*x));
 
 
 		//Debug.Log (angleInRadians * Mathf.Rad2Deg);
-		return angleInRadians * Mathf.Rad2Deg * -1;
 
-		//float angleInRadians = Mathf.Atan2(((v*v) -sqrt), (g*x));
+
+		//float angleInRadians = Mathf.Atan2(((v*v) - sqrt), (g*x));
 
 		//return angleInRadians * Mathf.Rad2Deg * -1;
+		return angleInRadians * Mathf.Rad2Deg * 1;
 
 		//barrel.transform.eulerAngles = new Vector3 (firingAngle, barrel.transform.eulerAngles.y, barrel.transform.eulerAngles.z);
 
@@ -265,7 +274,7 @@ public class Cannon : MonoBehaviour {
 			if (angletoTarget <= maxHTurnAngle) {
 				//	cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 
-				//cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 					} 
 //		}
 		//if (aimDelta < accuracyThreshhold) {
