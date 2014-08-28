@@ -21,6 +21,9 @@ public class Cannon : MonoBehaviour {
 
 	enum shipLocation {Port, Starboard};
 
+
+	public float angleAdjust;
+
 	//public Vector3 targetRotation;
 
 	//private Vector3 resetPosition;
@@ -93,7 +96,7 @@ public class Cannon : MonoBehaviour {
 
 		if (timeSinceLastFire >= fireInterval && primaryStation.GetComponent<stationAi>().Status == stationAi.StationStatus.Manned && currentTarget != null) {
 			GameObject cBall = (GameObject)Instantiate (cannonBall, barrel.transform.position, barrel.transform.rotation);
-			cBall.rigidbody.AddForce (barrel.transform.up * cannonVelocity, ForceMode.VelocityChange);
+			cBall.rigidbody.AddForce (barrel.transform.forward * cannonVelocity, ForceMode.VelocityChange);
 
 			timeSinceLastFire = 0;
 
@@ -111,6 +114,22 @@ public class Cannon : MonoBehaviour {
 		return null;
 		}
 
+//
+//	float getAngletoTarget() {
+////		double x = -(source.x - target.x);
+////		double y = (source.y - target.y);
+////		double v = 1440; //m/s
+////		double g = 25; //m/s
+////
+//
+////		double sqrt = (v*v*v*v) - (g*(g*(x*x) + 2*y*(v*v)));
+////		sqrt = Mathf.Sqrt(sqrt);
+////		angleInRadians = Math.Atan(((v*v) + sqrt)/(g*x));
+////		//Then to convert the radians into a vector that works with XNA, perform the following conversion:
+////			
+////			Vector2 angleVector = new Vector2(-(float)Math.Cos(angleInRadians), (float)Math.Sin(angleInRadians));
+//	} 	
+
 	float getInclinetoTarget() {
 //		RaycastHit r;
 //
@@ -126,9 +145,10 @@ public class Cannon : MonoBehaviour {
 		//angle to hit target at range R:
 		//Angle = .5 * sin^-1 (gR / v^2) 
 
-		Vector3 relativePos = currentTarget.transform.position - transform.position;
+		Vector3 relativePos = currentTarget.transform.position - barrel.transform.position;
 		//float rangeToTarget = relativePos
 
+		Debug.Log (relativePos);
 		//Debug.Log((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
 
 		//float firingAngle = .5f * Mathf.Asin ((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
@@ -140,22 +160,52 @@ public class Cannon : MonoBehaviour {
 		//to hit targets that can be above or below:
 		//angle = arctan( (v^2 +- sqrt(v^4- g(gx^2 + 2yv^2) ) / gx  )
 
+		Vector3 adjustedTargetPosition = new Vector3 (currentTarget.transform.position.x, barrel.transform.position.y, currentTarget.transform.position.z);
+
 		float g = Physics.gravity.y;
-		float x = relativePos.x;
+		//float x = Mathf.Abs (relativePos.x);
+
+		float x = Vector3.Distance (currentTarget.transform.position, transform.position);
+		//float x = Vector3.Distance (adjustedTargetPosition, barrel.transform.position);
+
 		float y = relativePos.y;
+
+		//Debug.Log (relativePos.ToString());
 
 		float v2 = Mathf.Pow (cannonVelocity, 2);
 		float v4 = Mathf.Pow (cannonVelocity, 4);
 
 		float x2 = Mathf.Pow (x, 2);
 
-		float firingAngle = Mathf.Atan( v2 + Mathf.Sqrt(v4 - g * ((g * x2) + (2f * y * v2) ) ) / (g * x) );
+
+		//Debug.Log (Mathf.Sqrt(v4 - (g * ((g * x2)) + (2f * y * v2) )));
+
+		Debug.Log ("Input:  " + x + "," + y);
+
+		float firingAngle = Mathf.Atan(( v2 - Mathf.Sqrt(v4 - (g * ((g * x2) + (2f * y * v2))))) / (g * x) );
 
 		firingAngle = firingAngle * Mathf.Rad2Deg;
 
-		Debug.Log (firingAngle);
+		//Debug.Log (firingAngle);
 
-		return firingAngle;
+
+		//return -1 * firingAngle;
+
+		float v = cannonVelocity;
+		
+		float sqrt = (v*v*v*v) - (g*(g*(x*x) + 2*y*(v*v)));
+		sqrt = Mathf.Sqrt(sqrt);
+
+		float angleInRadians = Mathf.Atan(((v*v) - sqrt)/(g*x));
+
+
+		//Debug.Log (angleInRadians * Mathf.Rad2Deg);
+		return angleInRadians * Mathf.Rad2Deg * -1;
+
+		//float angleInRadians = Mathf.Atan2(((v*v) -sqrt), (g*x));
+
+		//return angleInRadians * Mathf.Rad2Deg * -1;
+
 		//barrel.transform.eulerAngles = new Vector3 (firingAngle, barrel.transform.eulerAngles.y, barrel.transform.eulerAngles.z);
 
 		//float targetDistance = Vector3.Distance (transform.position, g.transform.position);
@@ -191,17 +241,31 @@ public class Cannon : MonoBehaviour {
 //		} else {
 		//Debug.Log (cannonBase.transform.rotation.ToString () + "|| " +  Quaternion.LookRotation (relativePos).ToString ());
 
-		Quaternion targetRotation = Quaternion.LookRotation (relativePos);
-		targetRotation = Quaternion.Euler (getInclinetoTarget(), targetRotation.eulerAngles.y, targetRotation.eulerAngles.z);
+		//Quaternion targetRotation = Quaternion.LookRotation (relativePos);
+		//targetRotation = Quaternion.Euler (getInclinetoTarget(), targetRotation.eulerAngles.y, targetRotation.eulerAngles.z);
 
 
+		//barrel.transform.localRotation = Quaternion.Euler (getInclinetoTarget (), barrel.transform.localRotation.y, barrel.transform.localRotation.z);
+
+		//barrel.transform.localRotation = Quaternion.AngleAxis (getInclinetoTarget (), barrel.transform.right);
+
+		float incline = getInclinetoTarget ();
+
+		Debug.Log (incline);
+
+		Quaternion q = Quaternion.Euler (incline, barrel.transform.localRotation.y, barrel.transform.localRotation.z);
+		Debug.Log (q.ToString ());
+
+		barrel.transform.localRotation = q;
+
+		//"flat" aim is actually x = 90 deg
 
 		float aimDelta = Vector3.Angle (cannonBase.transform.forward, relativePos);
 		//Debug.Log (aimDelta);
 			if (angletoTarget <= maxHTurnAngle) {
-					//cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+				//	cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 
-				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+				//cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 					} 
 //		}
 		//if (aimDelta < accuracyThreshhold) {
