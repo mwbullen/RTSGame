@@ -84,4 +84,8 @@ public class scoutAi : MonoBehaviour {
 		rigidbody.AddForce (Vector3.up * vertThrustForce, ForceMode.Impulse);
 		Debug.Log ("thrust");
 		}
+
+	void Launch() {
+		//remove parent/child relationship to dock
+		}
 }

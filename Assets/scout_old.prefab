@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: scout
+  m_Name: scout_old
   m_TagString: Scout
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1031.54846, y: 104.083405, z: 607.131958}
-  m_LocalScale: {x: 1, y: 1, z: 3}
+  m_LocalPosition: {x: 1021.43958, y: 92.6871033, z: 619.19873}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 5}
   m_Children:
   - {fileID: 400002}
   m_Father: {fileID: 0}

@@ -13,6 +13,8 @@ public class Cannon : MonoBehaviour {
 	public GameObject barrel;
 	public GameObject cannonBase;
 
+	public float targetLeadMultiple = 1;
+
 	private GameObject currentTarget;
 
 	public GameObject primaryStation;
@@ -49,10 +51,6 @@ public class Cannon : MonoBehaviour {
 		if (primaryStation.GetComponent<stationAi> ().Status != stationAi.StationStatus.Manned) {
 			return;
 				}
-//		if (currentTarget != null) {
-//			RotatetoTarget(currentTarget);
-//				
-//		}
 
 		if (currentTarget == null) {
 			RotatetoDefault();
@@ -148,7 +146,7 @@ public class Cannon : MonoBehaviour {
 		Vector3 relativePos = currentTarget.transform.position - barrel.transform.position;
 		//float rangeToTarget = relativePos
 
-		Debug.Log (relativePos);
+		//Debug.Log (relativePos);
 		//Debug.Log((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
 
 		//float firingAngle = .5f * Mathf.Asin ((9.8f * rangeToTarget) / cannonVelocity * cannonVelocity);
@@ -176,7 +174,7 @@ public class Cannon : MonoBehaviour {
 		//y = y * 1.5f;
 
 
-		Debug.Log ("Target height:" + y);
+		//Debug.Log ("Target height:" + y);
 
 		//Debug.Log (relativePos.ToString());
 
@@ -188,7 +186,7 @@ public class Cannon : MonoBehaviour {
 
 		//Debug.Log (Mathf.Sqrt(v4 - (g * ((g * x2)) + (2f * y * v2) )));
 
-		Debug.Log ("Input:  " + x + "," + y);
+		//Debug.Log ("Input:  " + x + "," + y);
 
 		float firingAngle = Mathf.Atan(( v2 - Mathf.Sqrt(v4 - (g * ((g * x2) + (2f * y * v2))))) / (g * x) );
 
@@ -230,11 +228,25 @@ public class Cannon : MonoBehaviour {
 //		}
 	}
 
+	Vector3 GetTargetLead() {
+		Debug.Log ("Target velocity:  " + currentTarget.transform.rigidbody.velocity);
+
+		Vector3 targetSpeed = currentTarget.transform.rigidbody.velocity;
+		float targetDistance = Vector3.Distance (transform.position, currentTarget.transform.position);
+
+
+		return targetSpeed * targetLeadMultiple;
+
+		}
+
 	void RotatetoTarget(GameObject g) {
 		Vector3 adjustedTargetPosition = new Vector3 (g.transform.position.x, cannonBase.transform.position.y, g.transform.position.z);
 
 		//Vector3 relativePos = adjustedTargetPosition - cannonBase.transform.position;
-		Vector3 relativePos = adjustedTargetPosition - transform.position;
+		Vector3 relativePos = adjustedTargetPosition - transform.position  + GetTargetLead();
+
+		Debug.Log ("relativepos:  " + (adjustedTargetPosition - transform.position).ToString());
+		Debug.Log ("target lead:" + GetTargetLead ());
 
 //		Quaternion rotation = Quaternion.LookRotation(relativePos);
 //		cannonBase.transform.rotation = rotation;
@@ -260,7 +272,7 @@ public class Cannon : MonoBehaviour {
 
 		float incline = getInclinetoTarget ();
 
-		Debug.Log (incline);
+		//Debug.Log (incline);
 
 		Quaternion q = Quaternion.Euler (incline, barrel.transform.localRotation.y, barrel.transform.localRotation.z);
 		Debug.Log (q.ToString ());
@@ -269,12 +281,12 @@ public class Cannon : MonoBehaviour {
 
 		//"flat" aim is actually x = 90 deg
 
-		float aimDelta = Vector3.Angle (cannonBase.transform.forward, relativePos);
+		//float aimDelta = Vector3.Angle (cannonBase.transform.forward, relativePos);
 		//Debug.Log (aimDelta);
 			if (angletoTarget <= maxHTurnAngle) {
 				//	cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
 
-				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos), rotateSpeed * Time.deltaTime);
+				cannonBase.transform.rotation = Quaternion.Slerp (cannonBase.transform.rotation, Quaternion.LookRotation (relativePos ) , rotateSpeed * Time.deltaTime);
 					} 
 //		}
 		//if (aimDelta < accuracyThreshhold) {

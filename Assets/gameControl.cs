@@ -63,18 +63,23 @@ public class gameControl : MonoBehaviour {
 	}
 
 	void CheckKeyPress() {
+
 		if (Input.GetKey (KeyCode.E)) {
 			Debug.Log ("E");
-			
+
+
+
 			GameObject target = getHitTarget();
 			
 			Debug.Log (target.tag);
-//			if (target != null) {
-//				foreach(GameObject scout in scouts) {
-//					scout.SendMessage("seek", target);				
-//					
-//				}				
-//			}
+			if (target != null) {
+				GameObject[] scouts = GameObject.FindGameObjectsWithTag("scout");
+
+				foreach(GameObject scout in scouts) {
+					scout.SendMessage("seek", target);				
+					
+				}				
+			}
 			
 		}
 		

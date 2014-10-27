@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class shipAi : MonoBehaviour {
-	
+
+	GameObject currentMissionTarget;
 	GameObject currentTarget;
 		
 	Quaternion currentIntendedRotation;
@@ -15,40 +16,50 @@ public class shipAi : MonoBehaviour {
 	
 	public float collisionDetectModifier;
 	public float collisionCheckInterval;
-
 	public float swerveCooldown;
-	float timeSinceSwerve;
-	
+
+	float timeSinceSwerve;	
 	float timeSinceCollisionCheck= 0;
 
 	Vector3 bankingVector =Vector3.zero;
 	public float bankLimit = 10;
 	
-	enum state {Launching, Seeking, Swerving, Landing, Stopped, Circling};
-	enum mission {Attacking, Defending, Harvesting};
+	enum state {Launching, Seeking, Swerving, Landing, Circling};
+	enum mission {Attack, Defend, Harvest, None};
+
+	mission currentMission = mission.None;
 
 	// Use this for initialization
 	state currentState = state.Stopped;
-	state previousState;
+	//state previousState;
 
-	
+	public GameObject landingZone;
+
+	public GameObject PrimaryStation;
+
 	public Material avoidMaterial;
 	
 	void Start () {
 		
 	}
-	
+
+	//guns should fire as coroutine - separate script
+
 	// Update is called once per frame
 	void Update () {
-		//if (currentTargetPosition != null) {
+//		if (currentState == state.Stopped) {
+//			return;
+//		}
 
-
-		//Debug.Log (currentState.ToString ());
-
-
-		if (currentState == state.Stopped) {
+		//If no mission or no crew, exit
+		if (currentMission == mission.None || PrimaryStation.GetComponent<stationAi>().Status != stationAi.StationStatus.Manned  ) {
 			return;
 		}
+
+		//If has mission and crew and is stil ldock ed to parent, launch
+		if (currentMission != mission.None && PrimaryStation.GetComponent<stationAi> ().Status == stationAi.StationStatus.Manned && transform.parent != null && currentState != state.Launching) {
+			currentState = state.Launching;
+				}
 
 		if (speed < maxSpeed){
 			speed += acceleration;			
@@ -93,7 +104,7 @@ public class shipAi : MonoBehaviour {
 					timeSinceSwerve = 0;
 
 					//Avoidance completed, resume last state
-					currentState = previousState;
+					//currentState = previousState;
 				}
 			} 
 				//transform.rotation = Quaternion.RotateTowards(transform.rotation, currentTargetRotation, turnSpeed * Time.deltaTime);
@@ -101,31 +112,48 @@ public class shipAi : MonoBehaviour {
 				break;
 		}
 
-
-
-
-		transform.rotation = Quaternion.Slerp(transform.rotation, currentIntendedRotation,turnSpeed * Time.deltaTime);
+		if (currentIntendedRotation != null || currentIntendedRotation != transform.rotation) {
+				transform.rotation = Quaternion.Slerp (transform.rotation, currentIntendedRotation, turnSpeed * Time.deltaTime);
+				}
 
 		//reduce speed during turn?
 		transform.Translate(Vector3.forward * Time.deltaTime * speed);		
 		
-		//}
+
 		
+//		
+//		if (currentTarget != null) {
+//			
+//		}			
 		
-		
-		if (currentTarget != null) {
-			
+	}	
+
+	void checkForThreats() {
+		//call regularly from update
+		//look for enemies within x distance
+
 		}
-		//transform.rotation.lo
+
+	void getNextState () {
 		/*
-		  var rotation = Quaternion.LookRotation(target.position - transform.position);
-    transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
-    */
+
+		If low health, retreat;
 		
-		
+
+		switch (mission) {
+
+			if Attack:
+				seek target
+			if Defend:
+				move towards target
+				if target within circle range:
+					Circle target
+			If Harvest
+
+			}
+ 		*/
 	}
-	
-	
+
 	void seek(GameObject g) {
 		currentTarget = g;
 		//currentTargetPosition = g.transform.position;
@@ -137,6 +165,10 @@ public class shipAi : MonoBehaviour {
 		currentTarget = g;
 		currentState = state.Circling;
 	}
+
+//	void Defend(GameObject g) {
+//
+//		}
 
 	int getRandomSign() {
 		//return 0 or 1
@@ -158,8 +190,6 @@ public class shipAi : MonoBehaviour {
 
 			//Need special case  if collider is ground
 			Debug.Log ("Collision detected");
-
-
 
 
 			if (bankingVector == Vector3.zero) {
@@ -186,7 +216,7 @@ public class shipAi : MonoBehaviour {
 			//currentIntendedRotation.eulerAngles = new Vector3(transform.rotation.eulerAngles.x + bankingVector.x, transform.rotation.eulerAngles.y + bankingVector.y, transform.rotation.z);
 
 			if (currentState != state.Swerving) {
-				previousState = currentState;
+				//previousState = currentState;
 				currentState = state.Swerving;
 			}
 
