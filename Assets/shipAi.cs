@@ -16,7 +16,8 @@ public class shipAi : MonoBehaviour {
 
 	public float circlingDistance = 30f;
 
-	
+	public float distancetoTarget;
+
 	public float collisionDetectModifier;
 	public float collisionCheckInterval;
 	public float swerveCooldown;
@@ -87,7 +88,12 @@ public class shipAi : MonoBehaviour {
 		timeSinceCollisionCheck += Time.deltaTime;
 		if (timeSinceCollisionCheck > collisionCheckInterval) {
 	//		checkForPendingCollision ();
+
+			if (currentState == state.Circling) {
+				currentState = state.MovingtoTargetDistance;
+			}
 			timeSinceCollisionCheck =0 ;
+
 		}
 
 		checkForSteering ();
@@ -95,6 +101,9 @@ public class shipAi : MonoBehaviour {
 		//reduce speed during turn?
 		transform.Translate(Vector3.forward * Time.deltaTime * speed);		
 
+		if (currentTarget != null) {
+			distancetoTarget = Vector3.Distance(transform.position, currentTarget.transform.position);
+				}
 
 //		switch (currentState) {
 //		case state.Circling:
@@ -132,12 +141,7 @@ public class shipAi : MonoBehaviour {
 //				//transform.rotation = Quaternion.RotateTowards(transform.rotation, currentTargetRotation, turnSpeed * Time.deltaTime);
 //				//transform.Rotate(
 //				break;
-//		}
-
-	
-		
-
-		
+//		}	
 //		
 //		if (currentTarget != null) {
 //			
@@ -164,10 +168,8 @@ public class shipAi : MonoBehaviour {
 				//Vector3 radiusToTarget = transform.position - currentTarget.transform.position;
 				Vector3 circleCenter = new Vector3(currentTarget.transform.position.x, transform.position.y, currentTarget.transform.position.z);
 
-
 				Quaternion lookAngle = Quaternion.LookRotation (transform.position - circleCenter);
 				currentIntendedRotation = lookAngle * Quaternion.Euler(0,95,0);
-
 
 				//return;
 				break;
@@ -213,6 +215,23 @@ public class shipAi : MonoBehaviour {
 
 		}
 
+	state getDefaultState() {
+		switch (currentMission) {
+		case mission.Attack:
+			return state.Seeking;					
+			//break;
+		case mission.Defend:
+			return state.MovingtoTargetDistance;
+			//break;
+		case mission.Harvest:
+			return state.Seeking;	
+			//break;
+		
+			}
+
+		return state.None;
+		}
+
 	void getNextState () {
 		/*
 
@@ -241,10 +260,10 @@ public class shipAi : MonoBehaviour {
 		
 	}
 
-	void circle(GameObject g) {
-		currentTarget = g;
-		currentState = state.Circling;
-	}
+//	void circle(GameObject g) {
+//		currentTarget = g;
+//		currentState = state.Circling;
+//	}
 
 //	void Defend(GameObject g) {
 //
@@ -291,7 +310,7 @@ public class shipAi : MonoBehaviour {
 		currentState = state.MovingtoTargetDistance;
 
 		currentMissionTarget = HomeShip;
-		currentTarget = HomeShip;
+		//currentTarget = HomeShip;
 
 	//	RequestingLanding = true;
 		}
@@ -310,6 +329,8 @@ public class shipAi : MonoBehaviour {
 
 		currentTarget = currentMissionTarget;
 	//	currentState = state.Seeking;
+		currentState = getDefaultState ();
+
 		}
 
 	void checkForPendingCollision() {
