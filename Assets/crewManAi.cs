@@ -68,7 +68,9 @@ public class crewManAi : MonoBehaviour {
 		if (currentTarget != null && navAgent.pathStatus == NavMeshPathStatus.PathComplete && navAgent.remainingDistance == 0 && navAgent.velocity.sqrMagnitude == 0f && !navAgent.pathPending) {
 			Debug.Log ("Crewman arrived!");
 			currentTarget.SendMessage("CrewManArrived");
+			transform.parent = currentTarget.transform;
 			transform.rotation = currentTarget.transform.rotation;
+			navAgent.enabled = false;
 		}
 	}
 

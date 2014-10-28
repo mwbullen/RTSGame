@@ -23,14 +23,13 @@ public class shipAi : MonoBehaviour {
 
 	Vector3 bankingVector =Vector3.zero;
 	public float bankLimit = 10;
-	
-	enum state {Launching, Seeking, Swerving, Landing, Circling};
-	enum mission {Attack, Defend, Harvest, None};
 
-	mission currentMission = mission.None;
 
-	// Use this for initialization
-	state currentState = state.Stopped;
+	public enum mission {Attack, Defend, Harvest, None};
+	public mission currentMission = mission.None;
+
+	public enum state {Launching, Seeking, Swerving, Landing, Circling, None};
+	public state currentState = state.None;
 	//state previousState;
 
 	public GameObject landingZone;
@@ -43,13 +42,15 @@ public class shipAi : MonoBehaviour {
 		
 	}
 
-	//guns should fire as coroutine - separate script
+	//guns should fire as coroutine - seperate script
 
-	// Update is called once per frame
+
 	void Update () {
 //		if (currentState == state.Stopped) {
 //			return;
 //		}
+
+
 
 		//If no mission or no crew, exit
 		if (currentMission == mission.None || PrimaryStation.GetComponent<stationAi>().Status != stationAi.StationStatus.Manned  ) {
@@ -58,7 +59,7 @@ public class shipAi : MonoBehaviour {
 
 		//If has mission and crew and is stil ldock ed to parent, launch
 		if (currentMission != mission.None && PrimaryStation.GetComponent<stationAi> ().Status == stationAi.StationStatus.Manned && transform.parent != null && currentState != state.Launching) {
-			currentState = state.Launching;
+			Launch ();
 				}
 
 		if (speed < maxSpeed){
@@ -71,53 +72,54 @@ public class shipAi : MonoBehaviour {
 			timeSinceCollisionCheck =0 ;
 		}
 
-		switch (currentState) {
-		case state.Circling:
-				if (Vector3.Distance(transform.position, currentTarget.transform.position) < 30) {
-				//transform.RotateAround(currentTarget.transform.position, Vector3.up, Time.deltaTime * 
-			}
-			 break;
-
-		case state.Seeking:
-				//transform.LookAt (currentTargetPosition);
-					//currentTargetRotation = currentTarget.transform.position - transform.position;
-			currentIntendedRotation = Quaternion.LookRotation(currentTarget.transform.position - transform.position);
-			//currentTargetRotation = Quaternion.SetFromToRotation(transform.position, currentTargetPosition);
-				//currentTargetRotation = transform.rotation;
-			break;
-		case state.Swerving :
-			//Debug.Log (transform.rotation + "," +  currentTargetRotation);
-			//if no update to target rotation (i.e. collision has been avoided)
-			//if (transform.rotation == currentTargetRotation) {
-			if (Quaternion.Angle(transform.rotation, currentIntendedRotation) < 5) {
-				Debug.Log("turn done");
-
-
-				timeSinceSwerve += Time.deltaTime;
-				bankingVector = Vector3.zero;
-
-				//Keep travelling same line for a time
-				if (timeSinceSwerve >= swerveCooldown) {
-					Debug.Log ("swerve done");
-
-					//currentState=state.Attacking;
-					timeSinceSwerve = 0;
-
-					//Avoidance completed, resume last state
-					//currentState = previousState;
-				}
-			} 
-				//transform.rotation = Quaternion.RotateTowards(transform.rotation, currentTargetRotation, turnSpeed * Time.deltaTime);
-				//transform.Rotate(
-				break;
-		}
-
-		if (currentIntendedRotation != null || currentIntendedRotation != transform.rotation) {
-				transform.rotation = Quaternion.Slerp (transform.rotation, currentIntendedRotation, turnSpeed * Time.deltaTime);
-				}
-
+		checkForSteering ();
+		
 		//reduce speed during turn?
 		transform.Translate(Vector3.forward * Time.deltaTime * speed);		
+
+
+//		switch (currentState) {
+//		case state.Circling:
+//				if (Vector3.Distance(transform.position, currentTarget.transform.position) < 30) {
+//				//transform.RotateAround(currentTarget.transform.position, Vector3.up, Time.deltaTime * 
+//			}
+//			 break;
+//
+//		case state.Seeking:
+//				//transform.LookAt (currentTargetPosition);
+//					//currentTargetRotation = currentTarget.transform.position - transform.position;
+//			currentIntendedRotation = Quaternion.LookRotation(currentTarget.transform.position - transform.position);
+//			//currentTargetRotation = Quaternion.SetFromToRotation(transform.position, currentTargetPosition);
+//				//currentTargetRotation = transform.rotation;
+//			break;
+//		case state.Swerving :
+//			//Debug.Log (transform.rotation + "," +  currentTargetRotation);
+//			//if no update to target rotation (i.e. collision has been avoided)
+//			//if (transform.rotation == currentTargetRotation) {
+//			if (Quaternion.Angle(transform.rotation, currentIntendedRotation) < 5) {
+//				Debug.Log("turn done");
+//
+//
+//				timeSinceSwerve += Time.deltaTime;
+//				bankingVector = Vector3.zero;
+//
+//				//Keep travelling same line for a time
+//				if (timeSinceSwerve >= swerveCooldown) {
+//					Debug.Log ("swerve done");
+//
+//					//currentState=state.Attacking;
+//					timeSinceSwerve = 0;
+//
+//					//Avoidance completed, resume last state
+//					//currentState = previousState;
+//				}
+//			} 
+//				//transform.rotation = Quaternion.RotateTowards(transform.rotation, currentTargetRotation, turnSpeed * Time.deltaTime);
+//				//transform.Rotate(
+//				break;
+//		}
+
+	
 		
 
 		
@@ -127,6 +129,15 @@ public class shipAi : MonoBehaviour {
 //		}			
 		
 	}	
+
+	void checkForSteering() {
+		currentIntendedRotation = Quaternion.LookRotation(currentTarget.transform.position - transform.position);
+
+		if ( currentIntendedRotation != transform.rotation) {
+			transform.rotation = Quaternion.Slerp (transform.rotation, currentIntendedRotation, turnSpeed * Time.deltaTime);
+		}
+
+	}
 
 	void checkForThreats() {
 		//call regularly from update
@@ -154,10 +165,11 @@ public class shipAi : MonoBehaviour {
  		*/
 	}
 
-	void seek(GameObject g) {
-		currentTarget = g;
+	void attack(GameObject g) {
+		currentMissionTarget = g;
 		//currentTargetPosition = g.transform.position;
-		currentState = state.Seeking;
+		currentMission = mission.Attack;
+		//currentState = state.Seeking;
 		
 	}
 
@@ -179,6 +191,35 @@ public class shipAi : MonoBehaviour {
 			return -1;
 				}
 	}
+
+	void HitWaypoint (string waypointTag) {
+
+		switch (waypointTag) {
+			case "LaunchWayPoint":
+		//	Debug.Log ("hitwaypoint:" + waypointTag);
+
+			LaunchCompleted();
+			break;
+
+			}
+		}
+
+	void Launch() {
+		Debug.Log ("launch");
+
+		transform.parent = null;
+
+		currentTarget = GameObject.FindGameObjectWithTag ("LaunchWayPoint");
+		currentState = state.Launching;
+	}
+
+
+	void LaunchCompleted() {
+		Debug.Log ("launch completed!");
+
+		currentTarget = currentMissionTarget;
+		currentState = state.Seeking;
+		}
 
 	void checkForPendingCollision() {
 		RaycastHit r;
@@ -226,7 +267,7 @@ public class shipAi : MonoBehaviour {
 
 			//currentTargetPosition.x += 100
 				; 
-			transform.renderer.material = avoidMaterial;
+		//	transform.renderer.material = avoidMaterial;
 			
 			//float y = r.collider.bounds.size.y;
 			//currentTargetPosition = r.collider.bounds.max;

@@ -68,18 +68,17 @@ public class gameControl : MonoBehaviour {
 			Debug.Log ("E");
 
 
-
-			GameObject target = getHitTarget();
-			
-			Debug.Log (target.tag);
-			if (target != null) {
-				GameObject[] scouts = GameObject.FindGameObjectsWithTag("scout");
+			//GameObject target = getHitTarget();
+			GameObject target = GameObject.FindGameObjectWithTag("Enemy");
+			//Debug.Log (target.tag);
+			//if (target != null) {
+				GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
 
 				foreach(GameObject scout in scouts) {
-					scout.SendMessage("seek", target);				
+					scout.SendMessage("attack", target);				
 					
 				}				
-			}
+			//}
 			
 		}
 		

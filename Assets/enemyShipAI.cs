@@ -12,14 +12,14 @@ public class enemyShipAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//orbitBase ();
+		orbitBase ();
 
-		transform.rigidbody.AddForce (transform.forward * orbitSpeed * Time.deltaTime);
+		//transform.rigidbody.AddForce (transform.forward * orbitSpeed * Time.deltaTime);
 
 
 		float d = Vector3.Distance (transform.position, playerShip.transform.position);
 
-		Debug.Log ("Enemy distance:  " + d);
+		//Debug.Log ("Enemy distance:  " + d);
 
 		if (d > 200) {
 			Debug.Log ("Distance exceeded");
