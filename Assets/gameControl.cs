@@ -7,6 +7,9 @@ public class gameControl : MonoBehaviour {
 	public float crewAssignCheckInterval = 2;
 	private float timeSinceCrewAssignCheck;
 
+	//public ArrayList LandingRequestQueue;
+
+
 	// Use this for initialization
 	void Start () {
 		GameObject[] landingPads = GameObject.FindGameObjectsWithTag ("Respawn");
@@ -44,6 +47,7 @@ public class gameControl : MonoBehaviour {
 
 		if (timeSinceCrewAssignCheck >= crewAssignCheckInterval) {
 			HandleCrewmanRequests();
+			HandleLandingRequests();
 				}
 
 		CheckKeyPress ();
@@ -82,7 +86,25 @@ public class gameControl : MonoBehaviour {
 			
 		}
 		
-		
+		if (Input.GetKey (KeyCode.R)) {
+			Debug.Log ("R");
+			
+			
+			//GameObject target = getHitTarget();
+			//GameObject target = GameObject.FindGameObjectWithTag("Enemy");
+			//Debug.Log (target.tag);
+			//if (target != null) {
+			GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
+			
+			foreach(GameObject scout in scouts) {
+				scout.SendMessage("Land");
+				
+			}				
+			//}
+			
+		}
+
+
 		if (Input.GetKey (KeyCode.H)) {
 //			foreach(GameObject scout in scouts) {
 //				//scout.SendMessage("seek", target);				
@@ -179,11 +201,22 @@ public class gameControl : MonoBehaviour {
 
 	void HandleLandingRequests() {
 		//Check all ships to see if any are requesting landing zone?
+
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Scout")) {
+			shipAi s = g.GetComponent<shipAi>();
+
+			if (s.currentState == shipAi.state.Landing && s.landingZone == null) {
+				s.landingZone = FindAvailableLandingSpot();
+
+			}				
+		}
+
 	}
 
 	GameObject FindAvailableLandingSpot() {
-		foreach (GameObject g in GameObject.FindGameObjectsWithTag("navSpot")) {
-			if (g.GetComponent<LandingPad>().CurrentShip == null) {
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("LandingZone")) {
+			if (g.GetComponentInChildren<shipAi>() == null){
+			//if (g.GetComponent<LandingPad>().CurrentShip == null) {
 				return g;
 			}
 		}

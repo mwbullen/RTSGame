@@ -62,6 +62,10 @@ public class shipAi : MonoBehaviour {
 			Launch ();
 				}
 
+		if (currentState == state.Landing && landingZone != null) {
+			BeginFinalLanding();
+			}
+
 		if (speed < maxSpeed){
 			speed += acceleration;			
 		}
@@ -131,12 +135,13 @@ public class shipAi : MonoBehaviour {
 	}	
 
 	void checkForSteering() {
-		currentIntendedRotation = Quaternion.LookRotation(currentTarget.transform.position - transform.position);
+		if (currentTarget != null) {
+			currentIntendedRotation = Quaternion.LookRotation (currentTarget.transform.position - transform.position);
 
-		if ( currentIntendedRotation != transform.rotation) {
-			transform.rotation = Quaternion.Slerp (transform.rotation, currentIntendedRotation, turnSpeed * Time.deltaTime);
+			if (currentIntendedRotation != transform.rotation) {
+					transform.rotation = Quaternion.Slerp (transform.rotation, currentIntendedRotation, turnSpeed * Time.deltaTime);
+			}
 		}
-
 	}
 
 	void checkForThreats() {
@@ -196,12 +201,12 @@ public class shipAi : MonoBehaviour {
 
 		switch (waypointTag) {
 		case "LaunchWayPoint":
-				if (currentState = state.Launching) {
+				if (currentState == state.Launching) {
 					LaunchCompleted();
 				}
 			break;
 		case "LandingWayPoint":
-			if (currentState = state.Landing) {
+			if (currentState == state.Landing) {
 				BeginFinalLanding();
 			}
 			break;
@@ -212,6 +217,7 @@ public class shipAi : MonoBehaviour {
 		Debug.Log ("launch");
 
 		transform.parent = null;
+		landingZone = null;
 
 		currentTarget = GameObject.FindGameObjectWithTag ("LaunchWayPoint");
 		currentState = state.Launching;
@@ -223,7 +229,7 @@ public class shipAi : MonoBehaviour {
 	}
 
 	void BeginFinalLanding() {
-
+		currentTarget = landingZone;
 	}
 
 	void LaunchCompleted() {

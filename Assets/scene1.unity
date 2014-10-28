@@ -3587,7 +3587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 30
   acceleration: 5
-  turnSpeed: 1
+  turnSpeed: 5
   collisionDetectModifier: 6
   collisionCheckInterval: 5
   swerveCooldown: 15
@@ -6437,6 +6437,10 @@ Prefab:
     - target: {fileID: 100002, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
       propertyPath: m_Name
       value: scout
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
+      propertyPath: turnSpeed
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
