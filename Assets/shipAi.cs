@@ -195,12 +195,16 @@ public class shipAi : MonoBehaviour {
 	void HitWaypoint (string waypointTag) {
 
 		switch (waypointTag) {
-			case "LaunchWayPoint":
-		//	Debug.Log ("hitwaypoint:" + waypointTag);
-
-			LaunchCompleted();
+		case "LaunchWayPoint":
+				if (currentState = state.Launching) {
+					LaunchCompleted();
+				}
 			break;
-
+		case "LandingWayPoint":
+			if (currentState = state.Landing) {
+				BeginFinalLanding();
+			}
+			break;
 			}
 		}
 
@@ -213,6 +217,14 @@ public class shipAi : MonoBehaviour {
 		currentState = state.Launching;
 	}
 
+	void Land() {
+		currentTarget = GameObject.FindGameObjectWithTag ("LandingWayPoint");
+		currentState = state.Landing;
+	}
+
+	void BeginFinalLanding() {
+
+	}
 
 	void LaunchCompleted() {
 		Debug.Log ("launch completed!");

@@ -177,6 +177,20 @@ public class gameControl : MonoBehaviour {
 		}
 	}
 
+	void HandleLandingRequests() {
+		//Check all ships to see if any are requesting landing zone?
+	}
+
+	GameObject FindAvailableLandingSpot() {
+		foreach (GameObject g in GameObject.FindGameObjectsWithTag("navSpot")) {
+			if (g.GetComponent<LandingPad>().CurrentShip == null) {
+				return g;
+			}
+		}
+
+		return null;
+	}
+
 	GameObject FindAvailableCrewman(crewManAi.Team preferredTeam) {
 		
 		//GameObject selectedCrewman = null;

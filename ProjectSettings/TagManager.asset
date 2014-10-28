@@ -6,18 +6,19 @@ TagManager:
   - 
   - Interact
   - Weapon
-  - Wood
+  - 
   - 
   - Environment
   - Friend
   - IgnoreRecast
   - Enemy
-  - wood
+  - 
   - Scout
   - Ground
   - navSpot
   - LaunchWayPoint
   - LandingWayPoint
+  - LandingZone
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
