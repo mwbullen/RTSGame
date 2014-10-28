@@ -2327,15 +2327,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 945.240356
+      value: 778.080017
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 117.735062
+      value: 117.739998
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 605.528015
+      value: 605.530029
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2379,7 +2379,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
       propertyPath: orbitSpeed
-      value: 25
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4414a7fc384ee4973b4f0ab00c480966, type: 2}
@@ -3588,11 +3588,14 @@ MonoBehaviour:
   maxSpeed: 30
   acceleration: 5
   turnSpeed: 5
+  circlingDistance: 100
   collisionDetectModifier: 6
   collisionCheckInterval: 5
   swerveCooldown: 15
   bankLimit: 10
+  HomeShip: {fileID: 1858659507}
   currentMission: 3
+  RequestingLanding: 0
   currentState: 4
   landingZone: {fileID: 1508495736}
   PrimaryStation: {fileID: 1070015831}
@@ -5816,7 +5819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerShip: {fileID: 1858659507}
-  orbitSpeed: 25
+  orbitSpeed: 0
 --- !u!23 &1812697219
 Renderer:
   m_ObjectHideFlags: 0
@@ -5866,7 +5869,7 @@ Transform:
   m_PrefabInternal: {fileID: 824754788}
   m_GameObject: {fileID: 1812697217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 945.240356, y: 117.735062, z: 605.528015}
+  m_LocalPosition: {x: 778.080017, y: 117.739998, z: 605.530029}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6441,6 +6444,14 @@ Prefab:
     - target: {fileID: 11400000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
       propertyPath: turnSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
+      propertyPath: HomeShip
+      value: 
+      objectReference: {fileID: 1858659507}
+    - target: {fileID: 11400000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}
+      propertyPath: circlingDistance
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e2159bf757124417a3c105fda1fcde0, type: 2}

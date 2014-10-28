@@ -97,7 +97,7 @@ public class gameControl : MonoBehaviour {
 			GameObject[] scouts = GameObject.FindGameObjectsWithTag("Scout");
 			
 			foreach(GameObject scout in scouts) {
-				scout.SendMessage("Land");
+				scout.SendMessage("ReturnandRequestLanding");
 				
 			}				
 			//}
@@ -205,7 +205,8 @@ public class gameControl : MonoBehaviour {
 		foreach (GameObject g in GameObject.FindGameObjectsWithTag("Scout")) {
 			shipAi s = g.GetComponent<shipAi>();
 
-			if (s.currentState == shipAi.state.Landing && s.landingZone == null) {
+			//if (s.currentState == shipAi.state.Landing && s.landingZone == null) {
+			if ( s.RequestingLanding && s.landingZone == null){
 				s.landingZone = FindAvailableLandingSpot();
 
 			}				
