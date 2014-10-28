@@ -309,7 +309,7 @@ public class shipAi : MonoBehaviour {
 		Debug.Log ("launch completed!");
 
 		currentTarget = currentMissionTarget;
-		currentState = state.Seeking;
+	//	currentState = state.Seeking;
 		}
 
 	void checkForPendingCollision() {
